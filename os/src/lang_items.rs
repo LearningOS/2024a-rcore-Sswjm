@@ -2,6 +2,7 @@
 
 use crate::sbi::shutdown;
 use core::panic::PanicInfo;
+use crate::backtrace::back_trace;
 
 #[panic_handler]
 /// panic handler
@@ -16,5 +17,7 @@ fn panic(info: &PanicInfo) -> ! {
     } else {
         println!("[kernel] Panicked: {}", info.message().unwrap());
     }
+
+    unsafe {back_trace();}
     shutdown()
 }

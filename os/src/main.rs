@@ -35,6 +35,7 @@ pub mod sbi;
 pub mod sync;
 pub mod syscall;
 pub mod trap;
+pub mod backtrace;
 
 global_asm!(include_str!("entry.asm"));
 global_asm!(include_str!("link_app.S"));
