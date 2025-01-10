@@ -5,15 +5,19 @@ use crate::{
     timer::get_time_us,
 };
 
+/// time duration
 #[repr(C)]
 #[derive(Debug)]
 pub struct TimeVal {
+    /// seconds
     pub sec: usize,
+    /// micro seconds
     pub usec: usize,
 }
 
 /// Task information
 #[allow(dead_code)]
+#[derive(Copy, Clone)]
 pub struct TaskInfo {
     /// Task status in it's life cycle
     status: TaskStatus,
@@ -21,6 +25,32 @@ pub struct TaskInfo {
     syscall_times: [u32; MAX_SYSCALL_NUM],
     /// Total running time of task
     time: usize,
+}
+
+impl TaskInfo {
+    /// Create a new TaskInfo 
+    pub fn new() -> Self {
+        TaskInfo {
+            status: TaskStatus::UnInit,
+            syscall_times: [0; MAX_SYSCALL_NUM],
+            time: 0,
+        }
+    }
+
+    /// Find syscall calls, and count
+    pub fn syscall_inc(&mut self, syscall_id: usize) {
+        self.syscall_times[syscall_id] += 1;
+    }
+
+    /// Set running time
+    pub fn set_running_time(&mut self, time: usize) {
+        self.time = time;
+    }
+
+    /// Set task status
+    pub fn set_task_status(&mut self, status: TaskStatus) {
+        self.status = status;
+    }
 }
 
 /// task exits and submit an exit code
